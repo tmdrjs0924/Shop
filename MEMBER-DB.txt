@@ -1,0 +1,25 @@
+CREATE TABLE MEMBER(
+  memberId VARCHAR(50),
+  memberPw VARCHAR(100) NOT NULL,
+  memberName VARCHAR(30) NOT NULL,
+  memberMail VARCHAR(100) NOT NULL,
+  memberAddr1 VARCHAR(100) NOT NULL,
+  memberAddr2 VARCHAR(100) NOT NULL,
+  memberAddr3 VARCHAR(100) NOT NULL,
+  adminCk int NOT NULL,
+  regDate DATE NOT NULL,
+  money int NOT NULL,
+  point int NOT NULL,
+  PRIMARY KEY(memberId)
+);
+
+
+
+
+
+// 패스워드 암호화 되어서 db에 저장되어서
+   회원가입 폼에서 가입해야지만 정상 로그인 가능
+  (쿼리문 직접입력하면 패스워드 암호화 작업이 진행안되서 로그인 불가)
+
+  회원가입폼에서 회원가입후 쿼리문에서 관리자 권한 수정 (adminck기본 0으로 가입됨, 쿼리에서 1로 수정가능)
+  update member set adminCk=1 where member="아이디 입력";  

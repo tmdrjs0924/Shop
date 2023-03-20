@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="kr.co.shop.mapper.MemberMapper">
+  
+  <insert id="join_ok" parameterType="kr.co.shop.vo.MemberVo">
+    insert into member(userid,name,pwd,zip,juso,juso_etc,phone,email,writeday,point)
+    values(#{userid},#{name},#{pwd},#{zip},#{juso},#{juso_etc},#{phone},#{email},now(),5000)
+  </insert>
+  
+  <select id="userid_check" resultType="int">
+    select count(*) from member where userid=#{param}
+  </select>
+  
+  <select id="login_ok" parameterType="kr.co.shop.vo.MemberVo" resultType="kr.co.shop.vo.MemberVo">
+      select userid,name,pwd from member where (state=0 or state=1) and userid=#{userid}
+  </select>
+    
+    <select id="userid_search" resultType="String">
+      select userid from member where name=#{param1} and email=#{param2}
+    </select>
+    
+    <select id="pwd_search" resultType="String">
+      select pwd from member where name=#{param1} and email=#{param2} and userid=#{param3}
+    </select>
+    
+    <select id="member_view" resultType="kr.co.shop.vo.MemberVo">
+      select * from member where userid=#{param}
+    </select>
+    
+    <select id="member_edit" resultType="kr.co.shop.vo.MemberVo">
+    select * from member where userid=#{param}
+  </select>
+  
+  <update id="member_edit_ok" parameterType="kr.co.shop.vo.MemberVo">
+    update member set zip=#{zip},juso=#{juso},juso_etc=#{juso_etc}
+    ,phone=#{phone},email=#{email} where userid=#{userid}
+  </update>
+  
+   <select id="member_delete" resultType="kr.co.shop.vo.MemberVo">
+      select * from member where userid=#{param}
+   </select>
+    
+  <update id="memberDelete">
+    update member set state=1 where userid=#{param}
+  </update>
+  
+  <select id="checkMemberId" parameterType="string" resultType="kr.co.shop.vo.MemberVo">
+    select * from member where userid=#{userid}
+  </select>
+  
+  <update id="pwd_edit_ok" parameterType="kr.co.shop.vo.MemberVo">
+    update member set pwd=#{pwd} where userid=#{userid}
+  </update>
+  
+  <select id="pwd_change" resultType="String">
+      select pwd from member where userid=#{param}
+  </select>
+  
+  <update id="pwd_change_ok" parameterType="kr.co.shop.vo.MemberVo">
+    update member set pwd=#{pwd} where userid=#{userid} and name=#{name} and email=#{email}
+  </update>
+
+  <update id="juso_edit_ok" parameterType="kr.co.shop.vo.JusoVo">
+    insert into juso(userid,name,juso,juso_etc,zip,phone)
+    values(#{userid},#{name},#{juso},#{juso_etc},#{zip},#{phone})
+  </update>
+  
+  <select id="juso_list" parameterType="kr.co.shop.vo.JusoVo" resultType="kr.co.shop.vo.JusoVo">
+      select * from juso where userid=#{param}
+  </select>
+  
+  <delete id="juso_delete">
+    delete from juso where id=#{param}
+  </delete>
+  
+  <select id="getChong" resultType="int">
+    select ceil(count(*)/#{param}) from juso
+  </select>
+  
+  <update id="juso_gibon">
+    update juso set state=1 where id=#{param}
+  </update>
+  
+  <select id="juso_gibonsearch" resultType="int">
+    select id from juso where userid=#{param} and state=1
+  </select>
+  
+  <update id="juso_gibonoff">
+    update juso set state=0 where id=#{param}
+  </update>
+  
+  <update id="mem_state_update">
+  	update member set state=0 where userid=#{param}
+  </update>
+  
+	<select id="reviewCount" resultType="int">
+		select count(*) from review where userid=#{param}
+	</select>
+	
+	<select id="qnaCount" resultType="int">
+		select count(*) from counsel where userid=#{param}
+	</select>
+	
+	<!-- 회원등급 업데이트 -->
+	<update id="rankUpdate">
+		update member set rank=#{param1} where userid=#{param2}
+	</update>
+
+	<select id="memberTotalPrice" resultType="int">
+		select ifnull(sum(orderTotalPrice),0) from order1 
+		where orderUserid=#{param} and orderDate >= date_sub(curdate(), interval 90 day)
+	</select>
+	
+	<select id="orderStateCount" resultType="int">
+		select count(*) from order1 where orderState=#{param1} and orderUserid=#{param2}
+	</select>
+  </mapper>

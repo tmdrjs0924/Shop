@@ -1,0 +1,161 @@
+* {
+  box-sizing: border-box;
+  border-collapse: collapse;
+  user-select: none;
+}
+a {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  padding: 0px;
+  margin: 0px;
+}
+.material-symbols-rounded {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 38;
+  cursor: pointer;
+}
+#section #left_btn {
+  padding-left: 10px;
+}
+#fixed_btn {
+	position:fixed;
+	right:20px;
+	bottom:20px;
+	z-index:111;
+	display:flex;
+	flex-direction:column;
+	text-align:center;
+	visibility:hidden;
+}
+#fixed_btn > #top_btn {
+	font-size:60px;
+}
+#fixed_btn > #recent {
+	font-size:60px;
+}
+/* --------------- section first --------------- */
+#section #first {
+  width: 100%;
+  height: 140px;
+  z-index: 100;
+  border-bottom:1px solid black;
+}
+#section #first #up {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+}
+#section #first #up #left {
+  width: 250px;
+}
+#section #first #up #center {
+  width: 200px;
+  text-align: center;
+}
+#section #first #up #right {
+  width: 250px;
+}
+#section #first #up #center #logo_icon {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+}
+#section #first #up #right #user_icon {
+  font-size: 35px;
+  margin-right: 7px;
+}
+#section #first #up #right #member_icon {
+  font-size: 35px;
+  margin-right: 7px;
+}
+#section #first #up #right #logout_icon {
+  font-size: 35px;
+  margin-right: 7px;
+}
+#section #first #up #right #wish_icon {
+  font-size: 35px;
+  margin-right: 7px;
+}
+#section #first #up #right #cart_icon {
+  font-size: 35px;
+}
+#section #first #down {
+  width: 100%;
+  height: 60px;
+}
+#section #first #down ul {
+  text-align: center;
+}
+#section #first #down ul li {
+  display: inline-block;
+  margin-right: 15px;
+  transition: all 0.2s ease-in-out;
+}
+#section #first #down > ul > li > a {
+  color: black;
+  display: block;
+  padding: 0 7px 0 7px;
+  margin: 10px 0 10px;
+  text-decoration: none;
+  position: relative;
+  font-size: 1.1em;
+  font-weight: 900;
+}
+#section #first #down > ul > li > a::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -4px;
+  left: 0px;
+  background-color: #000000;
+  transition: all 0.2s ease-in-out;
+  transform: scale(0, 0);
+  visibility: hidden;
+}
+#section #first #down ul li:hover a::before {
+  visibility: visible;
+  transform: scale(1, 1);
+}
+#section #first #down .menu {
+  width: 100%;
+  height: 0px;
+  overflow: hidden;
+  position: absolute;
+  left: 0px;
+  background: rgba(255, 255, 255, 0.8);
+  line-height: 45px;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+#section #first #down ul li:hover .menu {
+  height: 45px;
+}
+#section #first #down .menu a {
+  color: black;
+  margin-top: 20px;
+  font-size: 0.9em;
+  font-weight: 900;
+}
+
+/* --------------- section eightth --------------- */
+#section #eightth {
+	width:100%;
+	margin:auto;
+	font-size:10px;
+	padding:60px 0;
+	border-top:1px solid black;
+	background:#fffff4;
+	line-height:15px;
+}
+#section #eightth tr {
+	vertical-align:top;
+}
+#section #eightth div {
+	padding-bottom:4px;
+}

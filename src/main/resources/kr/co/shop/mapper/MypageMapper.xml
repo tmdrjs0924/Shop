@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybats-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.shop.mapper.MypageMapper">
+	<insert id="counsel_input">
+		insert into counsel(userid,content,state,writeday) values(#{userid},#{content},0,now())
+	</insert>
+	
+	<select id="orderInfo" resultType="kr.co.shop.vo.OrderVo">
+		select * from order1 where orderUserid=#{param1} and orderNumber like concat('%',#{param2},'%') order by id desc
+	</select>
+	
+	<select id="productInfo" resultType="kr.co.shop.vo.ProductVo">
+		select * from product where pCode=#{param}
+	</select>
+	
+	<update id="state_change">
+		update order1 set orderState=#{param1} where id=#{param2}
+	</update>
+	
+	<select id="before_review" resultType="String">
+		select orderPnumber from order1 where id=#{param}
+	</select>
+	
+	<insert id="review_ok">
+		insert into review(userid, content, star, pCode, writeday, Pnumber, orderId, image) values(#{userid},#{content},#{star},#{pCode},now(),#{Pnumber},#{orderId},#{image})
+	</insert>
+	
+	<select id="check_review" resultType="int">
+		select ifnull(count(*),0) from review where orderId=#{param1} and Pnumber=#{param2}
+	</select>
+	
+	<select id="review_history" resultType="kr.co.shop.vo.ReviewVo">
+		select * from review where userid=#{param1} order by id desc limit #{param2},#{param3}
+	</select>
+	
+	<select id="qna_history" resultType="kr.co.shop.vo.CounselVo">
+		select * from counsel where userid=#{param1} order by id desc limit #{param2},#{param3}
+	</select>
+	
+	<select id="reviewTotal" resultType="int">
+		select ceil(count(*)/#{param1}) from review where userid=#{param2}
+	</select>
+	
+	<select id="qnaTotal" resultType="int">
+		select ceil(count(*)/#{param1}) from counsel where userid=#{param2}
+	</select>
+
+</mapper>
+ 

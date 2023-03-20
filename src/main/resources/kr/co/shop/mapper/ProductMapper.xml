@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybats-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.shop.mapper.ProductMapper">
+	<select id="list" resultType="kr.co.shop.vo.ProductVo">
+		select * from product where pCode like concat('%',#{param1},'%') order by id desc limit #{param2},#{param3}
+	</select>
+	
+	<select id="display_list" resultType="kr.co.shop.vo.ProductVo">
+		select * from product where pCode like concat('%',#{param1},'%') and pShow=#{param2} or pCode like 'p01%' and pShow=#{param2} order by id desc limit #{param3},#{param4}
+	</select>
+	
+	<select id="dc_list" resultType="kr.co.shop.vo.ProductVo">
+		select * from product where pDc > 0 order by id desc limit #{param1},#{param2}
+	</select>
+	
+	<select id="listTotal" resultType="int">
+		select ceil(count(*)/#{param1}) from product where pCode like concat('%',#{param2},'%')
+	</select>
+	
+	<select id="displayTotal" resultType="int">
+		select ceil(count(*)/#{param1}) from product where pShow=#{param2} and pCode like concat('%',#{param3},'%') or pShow=#{param2} and pCode like 'p01%'
+	</select>
+	
+	<select id="dcTotal" resultType="int">
+		select ceil(count(*)/#{param1}) from product where pDc > 0
+	</select>
+	
+	<select id="mainList" resultType="kr.co.shop.vo.ProductVo">
+		select * from product where pCode like concat('%',#{param1},'%') and pShow=#{param2} order by id desc
+	</select>
+	
+	<select id="getWish" resultType="boolean">
+		select count(*) from wish where pCode=#{param1} and userid=#{param2}
+	</select>
+	
+	<select id="getCart" resultType="boolean">
+		select count(*) from cart where pCode=#{param1} and userid=#{param2}
+	</select>
+	
+	<select id="getSize" resultType="String">
+		select pSize from product where pCode=#{param}
+	</select>
+	
+	<insert id="cart_add2">
+		insert into cart(pCode, amount, userid, size, writeday) values(#{param1},1,#{param2},#{param3},now())
+	</insert>
+	
+	<select id="content" resultType="kr.co.shop.vo.ProductVo">
+		select * ,adddate(curdate(),pDay) as pDay2 ,
+    dayofweek( adddate(curdate(),pDay) ) as pYoil
+    from product  where pCode=#{param}
+	</select>
+	
+	<insert id="wish_add">
+	  insert into wish(pCode,userid,writeday)
+	  values(#{param1},#{param2},now())
+	</insert>
+	
+	<delete id="wish_del">
+	  delete from wish where pCode=#{param1} and userid=#{param2}
+	</delete>
+	
+	<select id="getWish_w" resultType="int">
+	  select count(*) from wish where pCode=#{param1} and userid=#{param2}
+	</select>
+	
+	<select id="wish_check" resultType="String">
+		select pcode from wish where userid=#{param}
+	</select>
+
+	<select id="cart_check" resultType="String">
+		select pCode from cart where userid=#{param}
+	</select>
+	
+	<insert id="wish_add2">
+		insert into wish(pcode, userid, writeday) values(#{param1},#{param2},now())
+	</insert>
+	
+	<delete id="wish_del2">
+		delete from wish where pcode=#{param1} and userid=#{param2}
+	</delete>
+	
+	<select id="search_list" resultType="kr.co.shop.vo.ProductVo">
+		select * from product where pName like '%${param1}%' and pName like '%${param2}%' and (pPrice-pPrice*pDc/100) between ifnull(nullif(#{param3},''),0) and ifnull(nullif(#{param4},''),9999999) order by id desc limit #{param5},#{param6}
+	</select>
+	
+	<select id="search_total" resultType="int">
+		select ceil(count(*)/#{param1}) from product where pName like concat('%',#{param2},'%') and pName like concat('%',#{param3},'%') and (pPrice-pPrice*pDc/100) between ifnull(nullif(#{param4},''),0) and ifnull(nullif(#{param5},''),9999999)
+	</select>
+	
+	<insert id="qna_write_ok">
+		insert into board(userid,title,content,sort,bimil,writeday,pCode) values(#{userid},#{title},#{content},#{sort},#{bimil},now(),#{pCode})
+	</insert>
+	
+	<select id="blist" resultType="kr.co.shop.vo.BoardVo">
+		select * from board where pCode=#{param1} order by id desc limit #{param2},#{param3}
+	</select>
+	
+	<select id="qna_update" parameterType="kr.co.shop.vo.BoardVo" resultType="kr.co.shop.vo.BoardVo">
+		select * from board where id=#{id}
+	</select>
+	
+	<update id="qna_update_ok">
+		update board set sort=#{sort},title=#{title},content=#{content},bimil=#{bimil} where id=#{id}
+	</update>
+	
+	<delete id="qna_delete" parameterType="kr.co.shop.vo.BoardVo">
+		delete from board where id=#{id}
+	</delete>
+	
+	<select id="getChong" resultType="int">
+		select ceil(count(*)/#{param1}) from board where pCode=#{param2}
+	</select>
+	
+	<select id="user_check2" resultType="int">
+		select count(*) from board where id=#{param1} and userid=#{param2}
+	</select>
+	
+	<update id="board_answer">
+		update board set state=1,answer=#{param1},writeday2=now() where id=#{param2}
+	</update>
+	
+	<select id="getProductqna" resultType="kr.co.shop.vo.ProductVo">
+		select pCode, pImg1, pName, pPrice, pDc from product where pCode=#{param}
+	</select>
+	
+	<select id="avgStar" resultType="int">
+		select ifnull(round(avg(star)),0) from review where pCode=#{param}
+	</select>
+	
+	<select id="countStar" resultType="int">
+		select count(*) from review where pCode=#{param}
+	</select>
+	
+	<select id="review_list" resultType="kr.co.shop.vo.ReviewVo">
+		select * from review where pCode=#{param1} order by id desc limit #{param2},#{param3}
+	</select>
+	
+	<select id="getChong2" resultType="int">
+		select ceil(count(*)/#{param1}) from review where pCode=#{param2}
+	</select>
+	
+	<select id="getImage" resultType="kr.co.shop.vo.ReviewVo">
+		select image from review where pCode=#{param} order by id desc
+	</select>
+	
+</mapper>

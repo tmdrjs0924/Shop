@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="kr.co.shop.mapper.WishMapper">
+    <select id="wish_view" resultType="kr.co.shop.vo.WishVo">
+      select p.pCode,p.pImg1, p.pName, p.pPrice,w.id, w.writeday  
+      from wish as w, product as p 
+      where w.pcode=p.pCode and userid=#{param}
+   </select>
+    
+    <delete id="wish_del">
+      delete from wish where id=#{param}
+    </delete>
+    
+    <insert id="add_cart">
+      insert into cart(pCode,userid,amount,writeday)
+      values(#{param1},#{param2},1,now())
+    </insert>
+    
+    <select id="cart_check" resultType="int">
+      select count(*) from cart
+      where pCode=#{param1} and userid=#{param2}
+    </select>
+    
+    <update id="cart_up">
+      update cart set amount=amount+1
+      where pCode=#{param1} and userid=#{param2}
+    </update>
+  </mapper>

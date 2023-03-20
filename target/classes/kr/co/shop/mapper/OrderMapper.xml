@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybats-3-mapper.dtd">
+ 
+<mapper namespace="kr.co.shop.mapper.OrderMapper">
+	<select id="getProduct" resultType="kr.co.shop.vo.ProductVo">
+		select * from product where pCode=#{param}
+	</select>
+	
+	<select id="getMember" resultType="kr.co.shop.vo.MemberVo">
+		select * from member where userid=#{param}
+	</select>
+	
+	<insert id="orderAction" parameterType="kr.co.shop.vo.OrderVo">
+		insert into order1(orderNumber,orderPnumber,orderUserid,orderCode,orderSize,orderAmount,
+		orderAddressId, orderMessage, orderMessage2, orderPayType, orderZip,orderJuso,orderJuso_etc,orderPhone,orderName,
+		orderPaySelection, orderPaySelection2, orderPaySelection3,
+		orderPayInstallment, orderPayInstallment2, orderPayInstallment3,orderMileage,
+		orderTotalPrice, orderTotalAmount, orderTotalDelivery, orderTotalCoupon, orderTotalPoint, orderTotalPayment, orderDate)
+		values(#{orderNumber},#{orderPnumber},#{orderUserid},#{orderCode},#{orderSize},#{orderAmount},
+		#{orderAddressId}, #{orderMessage}, #{orderMessage2},#{orderPayType},#{orderZip},#{orderJuso},#{orderJuso_etc},#{orderPhone},#{orderName},
+		#{orderPaySelection},#{orderPaySelection2},#{orderPaySelection3},
+		#{orderPayInstallment}, #{orderPayInstallment2},#{orderPayInstallment3},#{orderMileage},
+		#{orderTotalPrice}, #{orderTotalAmount}, #{orderTotalDelivery}, #{orderTotalCoupon}, #{orderTotalPoint}, #{orderTotalPayment}, now())
+	</insert>
+	
+	<!-- 주문코드 -->
+	<select id="getNumber" resultType="int">
+     	select ifnull( max( right(orderNumber,4) ) ,0)+1 from order1 
+     	where orderNumber like concat(#{param},'%')
+  	</select>
+  
+	<select id="list" resultType="kr.co.shop.vo.OrderVo">
+		select * from order1 where orderNumber=#{param}
+	</select>
+	
+	<!-- 적립금 업데이트 -->
+	<update id="useMileage">
+		update member set point= point-#{param1} where userid=#{param2}
+	</update>
+	
+	<!-- 기본배송지 -->
+	<select id="jusoList" resultType="kr.co.shop.vo.JusoVo">
+		select * from juso where state=1 and userid=#{param}
+	</select>
+	
+	<!-- 베스트 상품 -->
+	<select id="getBestProduct" resultType="kr.co.shop.vo.ProductVo">
+		select * from product where pShow=2
+	</select>
+
+	<!-- 배송지리스트 -->
+	<select id="addressList" resultType="kr.co.shop.vo.JusoVo">
+		select * from juso where userid=#{param}
+	</select>
+	
+	<!-- 주소선택 -->
+	<select id="changeAddress" resultType="kr.co.shop.vo.JusoVo">
+		select * from juso where id=#{param}
+	</select>
+	
+</mapper>
+
